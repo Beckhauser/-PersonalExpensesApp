@@ -1,9 +1,9 @@
-// import 'package:expenses/components/transaction_user.dart';
 import 'package:flutter/material.dart';
 
-import 'components/transaction_form.dart';
 import 'dart:math';
 
+import 'components/transaction_form.dart';
+import 'package:expenses/components/chart.dart';
 import 'package:expenses/components/transaction_form.dart';
 import 'package:expenses/components/transaction_list.dart';
 import 'package:expenses/models/transaction.dart';
@@ -29,7 +29,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _transactions = [
+  final List<Transaction> _transactions = [
     Transaction(
         id: 't1',
         title: 'Novo Tênis de Corrida',
@@ -44,10 +44,29 @@ class _MyHomePageState extends State<MyHomePage> {
     Transaction(
       id: 't3',
       title: 'Novo Celular',
-      value: 3500,
-      date: DateTime.now(),
+      value: 350,
+      date: DateTime.now().subtract(Duration(days: 3)),
+    ),
+    Transaction(
+      id: 't4',
+      title: 'Novo Celular',
+      value: 350,
+      date: DateTime.now().subtract(Duration(days: 8)),
+    ),
+    Transaction(
+      id: 't6',
+      title: 'Novo Celular',
+      value: 350,
+      date: DateTime.now().subtract(Duration(days: 6)),
     ),
   ];
+
+  List<Transaction> get _recentTransaction {
+    return _transactions
+        .where((transaction) => transaction.date
+            .isAfter(DateTime.now().subtract(Duration(days: 7))))
+        .toList();
+  }
 
   _addTransaction(String title, double value) {
     Transaction newTransaction = Transaction(
@@ -97,6 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // TransactionUser(),
             Column(
               children: [
+                Chart(_recentTransaction),
                 TransactionList(_transactions),
               ],
             ),
